@@ -1,0 +1,585 @@
+Patient table
+
+mysql> create table patient
+    -> (pid int primary key,
+    -> pname varchar(20),
+    ->
+    -> dob date,
+    -> gender varchar(10),
+    -> contact  int,
+    -> address varchar(50));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> desc patient
+    -> ;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| pid     | int         | NO   | PRI | NULL    |       |
+| pname   | varchar(20) | YES  |     | NULL    |       |
+| dob     | date        | YES  |     | NULL    |       |
+| gender  | varchar(10) | YES  |     | NULL    |       |
+| contact | int         | YES  |     | NULL    |       |
+| address | varchar(50) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+6 rows in set (0.02 sec)
+
+mysql> create table diagnostic_test
+    -> (diaid int primary key,
+    -> pid int,
+    -> testtype varchar(20),
+    -> testdate date,
+    -> testresult varchar(20));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> alter table diagnostic_test
+    -> add foreign key(pid)
+    -> references patient(pid);
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table diagnostic_test
+    -> modify column pid int not null;
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc diagnostic_test;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| diaid      | int         | NO   | PRI | NULL    |       |
+| pid        | int         | NO   | MUL | NULL    |       |
+| testtype   | varchar(20) | YES  |     | NULL    |       |
+| testdate   | date        | YES  |     | NULL    |       |
+| testresult | varchar(20) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+
+mysql> create table rooms
+    -> (rno int,
+    -> rid int primary key,
+    -> availstatus varchar(20),
+    -> depid int,
+    -> enid int);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> alter table rooms
+    -> add column pid int ;
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table rooms
+    -> add foreign key (depid)
+    -> references department(depid);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table rooms
+    -> add foreign key (enid)
+    -> references encutr_rec(eid);
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table rooms
+    -> add foreign key (pid)
+    -> references patient(pid);
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table rooms
+    -> modify column depid int not null;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table rooms
+    -> modify column enid int not null;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+mysql> alter table rooms
+    -> modify column pid int not null;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc rooms;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| rno         | int         | YES  |     | NULL    |       |
+| rid         | int         | NO   | PRI | NULL    |       |
+| availstatus | varchar(20) | YES  |     | NULL    |       |
+| depid       | int         | NO   | MUL | NULL    |       |
+| enid        | int         | NO   | MUL | NULL    |       |
+| pid         | int         | NO   | MUL | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+
+mysql> create table medhstry
+    -> (medid int primary key,
+    -> pid int ,
+    -> allergies varchar(20),
+    -> diagnosis varchar(20),
+    -> medications varchar(20));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> alter table medhstry
+    -> add column treatid int;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table medhstry
+    -> add column tdate date;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table medhstry
+    -> modify column pid int not null;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table medhstry
+    -> modify column treatid int not null;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table medhstry
+    -> add foreign key(pid)
+    -> references patient(pid);
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table medhstry
+    -> add foreign key(treatid)
+    -> references treatment(tid);
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc medhstry;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| medid       | int         | NO   | PRI | NULL    |       |
+| pid         | int         | NO   | MUL | NULL    |       |
+| allergies   | varchar(20) | YES  |     | NULL    |       |
+| diagnosis   | varchar(20) | YES  |     | NULL    |       |
+| medications | varchar(20) | YES  |     | NULL    |       |
+| treatid     | int         | NO   | MUL | NULL    |       |
+| tdate       | date        | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+
+mysql> alter table insurance
+    -> add foreign key(pid)
+    -> references patient(pid);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table insurance
+    -> modify column pid int not null;
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc insurance;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| inid       | int         | NO   | PRI | NULL    |       |
+| pid        | int         | NO   | MUL | NULL    |       |
+| insproname | varchar(20) | YES  |     | NULL    |       |
+| contact    | varchar(20) | YES  |     | NULL    |       |
+| address    | varchar(20) | YES  |     | NULL    |       |
+| plantype   | varchar(20) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+
+mysql> create table billing
+    -> (bid int primary key,
+    -> pid int,
+    -> eid int,
+    -> bdate date,
+    -> amount float(7,2),
+    -> paymentstatus varchar(20),
+    -> pdate date,
+    -> paymethod varchar(20),
+    -> remarks varchar(20));
+Query OK, 0 rows affected, 1 warning (0.04 sec)
+
+mysql> alter table billing
+    -> modify column pid int not null,
+    -> modify column eid int not null;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table billing
+    -> add foreign key(pid)
+    -> references patient(pid);
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table billing
+    -> add foreign key(eid)
+    -> references encutr_rec(eid);
+Query OK, 0 rows affected (0.11 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc billing;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| bid           | int         | NO   | PRI | NULL    |       |
+| pid           | int         | NO   | MUL | NULL    |       |
+| eid           | int         | NO   | MUL | NULL    |       |
+| bdate         | date        | YES  |     | NULL    |       |
+| amount        | float(7,2)  | YES  |     | NULL    |       |
+| paymentstatus | varchar(20) | YES  |     | NULL    |       |
+| pdate         | date        | YES  |     | NULL    |       |
+| paymethod     | varchar(20) | YES  |     | NULL    |       |
+| remarks       | varchar(20) | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+9 rows in set (0.00 sec)
+
+mysql> create table prescription
+    -> (preid int primary key,
+    -> pid int,
+    -> docid int
+    -> ,
+    -> medication varchar(20),
+    -> dosage varchar(20),
+    -> instructions varchar(30));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> alter table prescription
+    -> modify column pid int not null,
+    -> modify column docid int not null;
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table prescription
+    -> add foreign key(pid)
+    -> references patient(pid);
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table prescription
+    -> add foreign key(docid)
+    -> references doctor(docid);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc prescription;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| preid        | int         | NO   | PRI | NULL    |       |
+| pid          | int         | NO   | MUL | NULL    |       |
+| docid        | int         | NO   | MUL | NULL    |       |
+| medication   | varchar(20) | YES  |     | NULL    |       |
+| dosage       | varchar(20) | YES  |     | NULL    |       |
+| instructions | varchar(30) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> create table encutr_rec
+    -> (eid int,
+    -> pid int,
+    -> depid int,
+    -> edate date,
+    -> etype varchar(20));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> alter table encutr_rec
+    -> add primary key (eid);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table encutr_rec
+    -> modify pid int not null,
+    -> modify depid int not null;
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table encutr_Rec
+    -> add foreign key (pid)
+    -> references patient(pid);
+Query OK, 0 rows affected (0.11 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table encutr_Rec
+    -> add foreign key (depid)
+    -> references department(depid);
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc encutr_Rec;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| eid   | int         | NO   | PRI | NULL    |       |
+| pid   | int         | NO   | MUL | NULL    |       |
+| depid | int         | NO   | MUL | NULL    |       |
+| edate | date        | YES  |     | NULL    |       |
+| etype | varchar(20) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> create table treatment
+    -> (tid int primary key,
+    -> pid int,
+    -> docid int,
+    -> nurseid int,
+    -> diaid int,
+    -> tname varchar(20),
+    -> tdate date);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> alter table treatment
+    -> modify pid int not null,
+    -> modify docid int not null,
+    -> modify nurseid int not null,
+    -> modify diaid int not null;
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table treatment
+    -> add foreign key(pid)
+    -> references patient(pid);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table treatment
+    -> add foreign key(docid)
+    -> references doctor(docid);
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table treatment
+    -> add foreign key(nurseid)
+    -> references nurse(nurseid);
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table treatment
+    -> add foreign key(diaid)
+    -> references diagnostic_test(diaid);
+Query OK, 0 rows affected (0.11 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc treatment;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| tid     | int         | NO   | PRI | NULL    |       |
+| pid     | int         | NO   | MUL | NULL    |       |
+| docid   | int         | NO   | MUL | NULL    |       |
+| nurseid | int         | NO   | MUL | NULL    |       |
+| diaid   | int         | NO   | MUL | NULL    |       |
+| tname   | varchar(20) | YES  |     | NULL    |       |
+| tdate   | date        | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> create table nurse
+    -> (nurseid int primary key,
+    -> name varchar(20),
+    -> contact varchar(20),
+    -> did int);
+Query OK, 0 rows affected (0.06 sec)
+
+
+mysql> alter table nurse
+    -> add foreign key(did)
+    -> references department(depid);
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc nurse;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| nurseid | int         | NO   | PRI | NULL    |       |
+| name    | varchar(20) | YES  |     | NULL    |       |
+| contact | varchar(20) | YES  |     | NULL    |       |
+| did     | int         | YES  | MUL | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+
+mysql> show tables
+    -> ;
++------------------------+
+| Tables_in_case_study_1 |
++------------------------+
+| billing                |
+| department             |
+| diagnostic_test        |
+| doctor                 |
+| encutr_rec             |
+| insurance              |
+| medhstry               |
+| nurse                  |
+| patient                |
+| prescription           |
+| rooms                  |
+| treatment              |
++------------------------+
+12 rows in set (0.00 sec)
+
+mysql> desc billing;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| bid           | int         | NO   | PRI | NULL    |       |
+| pid           | int         | NO   | MUL | NULL    |       |
+| eid           | int         | NO   | MUL | NULL    |       |
+| bdate         | date        | YES  |     | NULL    |       |
+| amount        | float(7,2)  | YES  |     | NULL    |       |
+| paymentstatus | varchar(20) | YES  |     | NULL    |       |
+| pdate         | date        | YES  |     | NULL    |       |
+| paymethod     | varchar(20) | YES  |     | NULL    |       |
+| remarks       | varchar(20) | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+9 rows in set (0.00 sec)
+
+mysql> desc department;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| depid    | int         | NO   | PRI | NULL    |       |
+| depname  | varchar(20) | YES  |     | NULL    |       |
+| location | varchar(20) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc diagnostic_test;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| diaid      | int         | NO   | PRI | NULL    |       |
+| pid        | int         | NO   | MUL | NULL    |       |
+| testtype   | varchar(20) | YES  |     | NULL    |       |
+| testdate   | date        | YES  |     | NULL    |       |
+| testresult | varchar(20) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> desc doctor;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| docid      | int         | NO   | PRI | NULL    |       |
+| dname      | varchar(20) | YES  |     | NULL    |       |
+| speciality | varchar(20) | YES  |     | NULL    |       |
+| j_date     | date        | YES  |     | NULL    |       |
+| contact    | int         | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> desc encutr_Rec;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| eid   | int         | NO   | PRI | NULL    |       |
+| pid   | int         | NO   | MUL | NULL    |       |
+| depid | int         | NO   | MUL | NULL    |       |
+| edate | date        | YES  |     | NULL    |       |
+| etype | varchar(20) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> desc insurance;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| inid       | int         | NO   | PRI | NULL    |       |
+| pid        | int         | NO   | MUL | NULL    |       |
+| insproname | varchar(20) | YES  |     | NULL    |       |
+| contact    | varchar(20) | YES  |     | NULL    |       |
+| address    | varchar(20) | YES  |     | NULL    |       |
+| plantype   | varchar(20) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> desc medhstry;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| medid       | int         | NO   | PRI | NULL    |       |
+| pid         | int         | NO   | MUL | NULL    |       |
+| allergies   | varchar(20) | YES  |     | NULL    |       |
+| diagnosis   | varchar(20) | YES  |     | NULL    |       |
+| medications | varchar(20) | YES  |     | NULL    |       |
+| treatid     | int         | NO   | MUL | NULL    |       |
+| tdate       | date        | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> desc nurse;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| nurseid | int         | NO   | PRI | NULL    |       |
+| name    | varchar(20) | YES  |     | NULL    |       |
+| contact | varchar(20) | YES  |     | NULL    |       |
+| did     | int         | YES  | MUL | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc patient;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| pid     | int         | NO   | PRI | NULL    |       |
+| pname   | varchar(20) | YES  |     | NULL    |       |
+| dob     | date        | YES  |     | NULL    |       |
+| gender  | varchar(10) | YES  |     | NULL    |       |
+| contact | int         | YES  |     | NULL    |       |
+| address | varchar(50) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> desc prescription;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| preid        | int         | NO   | PRI | NULL    |       |
+| pid          | int         | NO   | MUL | NULL    |       |
+| docid        | int         | NO   | MUL | NULL    |       |
+| medication   | varchar(20) | YES  |     | NULL    |       |
+| dosage       | varchar(20) | YES  |     | NULL    |       |
+| instructions | varchar(30) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> desc rooms;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| rno         | int         | YES  |     | NULL    |       |
+| rid         | int         | NO   | PRI | NULL    |       |
+| availstatus | varchar(20) | YES  |     | NULL    |       |
+| depid       | int         | NO   | MUL | NULL    |       |
+| enid        | int         | NO   | MUL | NULL    |       |
+| pid         | int         | NO   | MUL | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> desc treatment;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| tid     | int         | NO   | PRI | NULL    |       |
+| pid     | int         | NO   | MUL | NULL    |       |
+| docid   | int         | NO   | MUL | NULL    |       |
+| nurseid | int         | NO   | MUL | NULL    |       |
+| diaid   | int         | NO   | MUL | NULL    |       |
+| tname   | varchar(20) | YES  |     | NULL    |       |
+| tdate   | date        | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+

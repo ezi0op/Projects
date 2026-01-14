@@ -1,0 +1,75 @@
+Question - 1] The accounts team wants to check payments made via UPI to measure digital 
+adoption. 
+
+mysql> select * from payments where paymentmethod="upi";
+
+Question - 2] List all unique first names of customers for a duplicate check. 
+
+mysql> select distinct firstname from customers;
+
+Question - 3] Delete all rooms with Capacity = 1. 
+
+mysql> delete from rooms where capacity=1;
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`hotelsalesdb`.`bookings`, CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`RoomID`) REFERENCES `rooms` (`RoomID`))
+
+
+Question - 4] Display each customer’s name and phone number together using CONCAT. 
+
+mysql> select concat(firstname,' ',lastname,' - ',phone)"customerdetails"from customers;
+
+
+Question - 5] The booking office wants to see bookings where RoomID = 10 to check utilization 
+of a specific room. 
+ 
+
+mysql> select * from bookings
+    -> where roomid = 10;
+
+
+Question - 6] Identify rooms whose Capacity is greater than the average Capacity of all rooms. 
+(Rooms subquery)
+
+
+mysql> select * from rooms where capacity
+    -> > (select avg(capacity) from rooms);
+
+
+Question - 7] Create a VIEW StaffContact showing Staff FirstName, LastName, Role, and  
+Phone. 
+
+mysql> create view staffcontact as
+    -> (select firstname,lastname,role,phone from staff);
+
+
+Question - 8] The receptionist wants to offer Suite rooms under ₹7000 to business travelers. 
+
+mysql> select * from rooms
+    -> where roomtype = 'suite' and pricepernight<7000;
+
+Question - 9] The admin wants to see email addresses sorted by LastName from the Customers table.
+
+mysql> select email from customers order by lastname;
+
+Question - 10] Show staff full names combined into one column.
+
+mysql> select concat(firstname,' ',lastname) "full name "from staff;
+ 
+Question - 11] Display all payment details in one line using CONCAT_WS.
+
+
+mysql> select concat_ws(',',paymentid,bookingid,paymentdate,paymentmethod,amount) from payments;
+
+ 
+Question - 12] The hotel wants to display the 2 most expensive rooms for VIP guests. 
+
+
+mysql> select roomid,pricepernight from rooms order by pricepernight desc limit 2;
+
+
+
+
+Question - 13] Show each BookingID with its CheckIn and CheckOut dates combined.
+
+
+
+mysql> select bookingid,checkindate,checkoutdate from bookings;
